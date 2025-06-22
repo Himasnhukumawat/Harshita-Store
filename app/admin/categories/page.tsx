@@ -7,7 +7,7 @@ import type { Category } from "@/lib/types"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Trash2, Edit, Plus, Tag } from "lucide-react"
+import { Trash2, Edit, Plus, Tag, Settings } from "lucide-react"
 import Link from "next/link"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { LoadingSpinner } from "@/components/loading-spinner"
@@ -112,6 +112,11 @@ export default function CategoriesPage() {
                 <div className="flex justify-between items-center">
                   <Badge variant="secondary">{new Date(category.createdAt?.toDate()).toLocaleDateString()}</Badge>
                   <div className="flex space-x-2">
+                    <Button size="sm" variant="outline" asChild>
+                      <Link href={`/admin/categories/${category.id}/subcategories`}>
+                        <Settings className="h-4 w-4" />
+                      </Link>
+                    </Button>
                     <Button size="sm" variant="outline" asChild>
                       <Link href={`/admin/categories/edit/${category.id}`}>
                         <Edit className="h-4 w-4" />

@@ -5,14 +5,14 @@ import { useState, useEffect } from "react"
 import { useRouter, useParams } from "next/navigation"
 import { doc, getDoc, updateDoc } from "firebase/firestore"
 import { db } from "@/lib/firebase"
-import type { Category } from "@/lib/types"
+import type { Category, SubCategory } from "@/lib/types"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { ArrowLeft } from "lucide-react"
+import { ArrowLeft, Plus, X, Edit, Save, Trash2 } from "lucide-react"
 import Link from "next/link"
 import { ImageUpload } from "@/components/image-upload"
 import { LoadingSpinner } from "@/components/loading-spinner"
@@ -34,6 +34,12 @@ export default function EditCategoryPage() {
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState("")
   const [currentCategory, setCurrentCategory] = useState<Category | null>(null)
+  
+  // Subcategory management states
+  const [subCategories, setSubCategories] = useState<SubCategory[]>([])
+  const [newSubCategory, setNewSubCategory] = useState({ name: "", description: "" })
+  const [editingSubCategory, setEditingSubCategory] = useState<string | null>(null)
+  const [editSubCategoryData, setEditSubCategoryData] = useState({ name: "", description: "" })
 
   useEffect(() => {
     fetchCategory()
@@ -53,6 +59,7 @@ export default function EditCategoryPage() {
         setCurrentImageUrl(categoryData.imageUrl || "")
         setUploadedImageUrl(categoryData.imageUrl || "")
         setCurrentCategory(categoryData)
+        setSubCategories(categoryData.subCategories || [])
       } else {
         setError("Category not found")
       }
@@ -72,6 +79,54 @@ export default function EditCategoryPage() {
     }
   }
 
+  // Subcategory management functions
+  const addSubCategory = () => {
+    if (newSubCategory.name.trim()) {
+      const subCategory: SubCategory = {
+        id: Date.now().toString(),
+        name: newSubCategory.name.trim(),
+        description: newSubCategory.description.trim(),
+      }
+      setSubCategories([...subCategories, subCategory])
+      setNewSubCategory({ name: "", description: "" })
+    }
+  }
+
+  const removeSubCategory = (id: string) => {
+    setSubCategories(subCategories.filter((sub) => sub.id !== id))
+  }
+
+  const startEditingSubCategory = (subCategory: SubCategory) => {
+    setEditingSubCategory(subCategory.id)
+    setEditSubCategoryData({
+      name: subCategory.name,
+      description: subCategory.description || "",
+    })
+  }
+
+  const saveSubCategoryEdit = () => {
+    if (editSubCategoryData.name.trim() && editingSubCategory) {
+      setSubCategories(
+        subCategories.map((sub) =>
+          sub.id === editingSubCategory
+            ? {
+                ...sub,
+                name: editSubCategoryData.name.trim(),
+                description: editSubCategoryData.description.trim(),
+              }
+            : sub
+        )
+      )
+      setEditingSubCategory(null)
+      setEditSubCategoryData({ name: "", description: "" })
+    }
+  }
+
+  const cancelSubCategoryEdit = () => {
+    setEditingSubCategory(null)
+    setEditSubCategoryData({ name: "", description: "" })
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError("")
@@ -86,6 +141,7 @@ export default function EditCategoryPage() {
         name: formData.name,
         description: formData.description,
         imageUrl,
+        subCategories, // Update subcategories
         // Keep existing createdAt
       })
 
@@ -139,14 +195,14 @@ export default function EditCategoryPage() {
         </Button>
         <div>
           <h1 className="text-3xl font-bold">Edit Category</h1>
-          <p className="text-muted-foreground">Update category information</p>
+          <p className="text-muted-foreground">Update category information and manage sub-categories</p>
         </div>
       </div>
 
       <Card>
         <CardHeader>
           <CardTitle>Category Details</CardTitle>
-          <CardDescription>Update the category information</CardDescription>
+          <CardDescription>Update the category information and manage sub-categories</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-6">
@@ -193,22 +249,122 @@ export default function EditCategoryPage() {
                 <p className="text-sm text-muted-foreground">Manage sub-categories for this category</p>
               </div>
 
+              {/* Add new sub-category */}
+              <Card>
+                <CardContent className="pt-6">
+                  <div className="grid gap-4 md:grid-cols-2">
+                    <div className="space-y-2">
+                      <Label htmlFor="subCategoryName">Sub-Category Name</Label>
+                      <Input
+                        id="subCategoryName"
+                        value={newSubCategory.name}
+                        onChange={(e) => setNewSubCategory({ ...newSubCategory, name: e.target.value })}
+                        placeholder="e.g., Incense, Diyas, Idols"
+                        disabled={saving}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="subCategoryDescription">Description (Optional)</Label>
+                      <Input
+                        id="subCategoryDescription"
+                        value={newSubCategory.description}
+                        onChange={(e) => setNewSubCategory({ ...newSubCategory, description: e.target.value })}
+                        placeholder="Brief description"
+                        disabled={saving}
+                      />
+                    </div>
+                  </div>
+                  <Button
+                    type="button"
+                    onClick={addSubCategory}
+                    className="mt-4"
+                    disabled={!newSubCategory.name.trim() || saving}
+                  >
+                    <Plus className="mr-2 h-4 w-4" />
+                    Add Sub-Category
+                  </Button>
+                </CardContent>
+              </Card>
+
               {/* Display existing sub-categories */}
-              {currentCategory?.subCategories && currentCategory.subCategories.length > 0 && (
+              {subCategories.length > 0 && (
                 <div className="space-y-2">
                   <Label className="text-sm font-medium">
-                    Current Sub-Categories ({currentCategory.subCategories.length})
+                    Current Sub-Categories ({subCategories.length})
                   </Label>
                   <div className="grid gap-2">
-                    {currentCategory.subCategories.map((subCategory) => (
+                    {subCategories.map((subCategory) => (
                       <div
                         key={subCategory.id}
                         className="flex items-center justify-between p-3 border rounded-md bg-muted/50"
                       >
-                        <div>
-                          <p className="font-medium">{subCategory.name}</p>
-                          {subCategory.description && (
-                            <p className="text-sm text-muted-foreground">{subCategory.description}</p>
+                        {editingSubCategory === subCategory.id ? (
+                          // Edit mode
+                          <div className="flex-1 grid gap-2 md:grid-cols-2">
+                            <Input
+                              value={editSubCategoryData.name}
+                              onChange={(e) => setEditSubCategoryData({ ...editSubCategoryData, name: e.target.value })}
+                              placeholder="Sub-category name"
+                            />
+                            <Input
+                              value={editSubCategoryData.description}
+                              onChange={(e) => setEditSubCategoryData({ ...editSubCategoryData, description: e.target.value })}
+                              placeholder="Description (optional)"
+                            />
+                          </div>
+                        ) : (
+                          // Display mode
+                          <div className="flex-1">
+                            <p className="font-medium">{subCategory.name}</p>
+                            {subCategory.description && (
+                              <p className="text-sm text-muted-foreground">{subCategory.description}</p>
+                            )}
+                          </div>
+                        )}
+                        
+                        <div className="flex items-center space-x-2">
+                          {editingSubCategory === subCategory.id ? (
+                            <>
+                              <Button
+                                type="button"
+                                variant="ghost"
+                                size="sm"
+                                onClick={saveSubCategoryEdit}
+                                disabled={!editSubCategoryData.name.trim() || saving}
+                              >
+                                <Save className="h-4 w-4" />
+                              </Button>
+                              <Button
+                                type="button"
+                                variant="ghost"
+                                size="sm"
+                                onClick={cancelSubCategoryEdit}
+                                disabled={saving}
+                              >
+                                <X className="h-4 w-4" />
+                              </Button>
+                            </>
+                          ) : (
+                            <>
+                              <Button
+                                type="button"
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => startEditingSubCategory(subCategory)}
+                                disabled={saving}
+                              >
+                                <Edit className="h-4 w-4" />
+                              </Button>
+                              <Button
+                                type="button"
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => removeSubCategory(subCategory.id)}
+                                disabled={saving}
+                              >
+                                <Trash2 className="h-4 w-4" />
+                              </Button>
+                            </>
                           )}
                         </div>
                       </div>
