@@ -63,3 +63,59 @@ export interface DashboardStats {
   lowStockProducts: number
   recentProducts: Product[]
 }
+
+export interface StoreSettings {
+  id?: string
+  // Basic Information
+  storeName: string
+  storeNameHindi: string
+  tagline: string
+  taglineHindi: string
+  description: string
+  descriptionHindi: string
+  
+  // Store Features
+  freePickup: boolean
+  cashOnPickup: boolean
+  onlineOrdering: boolean
+  
+  // Contact Information
+  primaryPhone: string
+  secondaryPhone: string
+  whatsappNumber: string
+  email: string
+  website: string
+  
+  // Business Information
+  gstNumber: string
+  licenseNumber: string
+  establishedYear: number
+  
+  // Address Information
+  address: string
+  addressHindi: string
+  city: string
+  state: string
+  pincode: string
+  landmark: string
+  
+  // Store Hours
+  mondayToSaturday: string
+  sunday: string
+  holidayHours: string
+  
+  // Social Media
+  facebook: string
+  instagram: string
+  twitter: string
+  
+  // SEO Settings
+  metaTitle: string
+  metaDescription: string
+  keywords: string[]
+  
+  // Metadata
+  createdAt?: any
+  updatedAt?: any
+  updatedBy?: string
+}

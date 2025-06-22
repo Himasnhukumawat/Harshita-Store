@@ -1,6 +1,6 @@
 "use client"
 
-import { Package, Tag, Users, Home, LogOut, List, Settings, Shield, Crown } from "lucide-react"
+import { Package, Tag, Users, Home, LogOut, List, Settings, Shield, Crown, Phone } from "lucide-react"
 import Link from "next/link"
 import { useAuth } from "@/contexts/auth-context"
 import { useRouter, usePathname } from "next/navigation"
@@ -56,6 +56,11 @@ const menuItems = [
     title: "User Management",
     url: "/admin/user-management",
     icon: Shield,
+  },
+  {
+    title: "Contact Settings",
+    url: "/admin/contact-settings",
+    icon: Phone,
   },
   {
     title: "Settings",

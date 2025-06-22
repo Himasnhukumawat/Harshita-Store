@@ -1,0 +1,118 @@
+ADMIN PANEL - CONTACT SETTINGS MANAGEMENT PROMPT
+==================================================
+
+The Admin Panel now includes a comprehensive Contact Settings section that allows you to manage all your store information from one centralized location. Here's what you can manage:
+
+📋 BASIC STORE INFORMATION
+--------------------------
+• Store Name (English): Your store's official name in English
+• Store Name (Hindi): Your store's official name in Hindi
+• Tagline (English): A catchy slogan or tagline in English
+• Tagline (Hindi): A catchy slogan or tagline in Hindi
+• Description (English): Detailed store description in English
+• Description (Hindi): Detailed store description in Hindi
+
+⚙️ STORE FEATURES & SERVICES
+-----------------------------
+• Free Pickup: Toggle to enable/disable free pickup service
+• Cash on Pickup: Toggle to accept cash payments on pickup
+• Online Ordering: Toggle to enable online ordering system
+
+📞 CONTACT INFORMATION
+----------------------
+• Primary Phone Number: Main contact number for customers
+• Secondary Phone Number: Alternative contact number (optional)
+• WhatsApp Number: WhatsApp business number for order notifications
+• Email Address: Business email address
+• Website URL: Your store's website link (optional)
+
+🏢 BUSINESS INFORMATION
+-----------------------
+• GST Number: Your business GST registration number (optional)
+• License Number: Business license number (optional)
+• Established Year: Year when your business was established
+
+📍 ADDRESS INFORMATION
+----------------------
+• Address (English): Complete store address in English
+• Address (Hindi): Complete store address in Hindi
+• City: City where your store is located
+• State: State where your store is located
+• PIN Code: Postal code of your store location
+• Landmark: Nearby landmark for easy location (optional)
+
+🕒 STORE HOURS
+--------------
+• Monday to Saturday: Regular business hours (e.g., "9:00 AM - 8:00 PM")
+• Sunday: Sunday business hours (e.g., "10:00 AM - 6:00 PM")
+• Holiday Hours: Special hours during holidays or festivals (optional)
+
+📱 SOCIAL MEDIA LINKS
+---------------------
+• Facebook Page: Link to your Facebook business page
+• Instagram Profile: Link to your Instagram business profile
+• Twitter Profile: Link to your Twitter business profile
+
+🔍 SEO SETTINGS
+---------------
+• Meta Title: SEO title for your website (50-60 characters recommended)
+• Meta Description: SEO description for your website (150-160 characters recommended)
+• Keywords: SEO keywords separated by commas for better search visibility
+
+🎯 HOW TO ACCESS AND USE
+------------------------
+1. Navigate to Admin Panel → Contact Settings
+2. Use the 6 organized tabs to manage different information types
+3. Fill in all relevant fields for your business
+4. Click "Save Changes" to persist your data
+5. Use "Refresh" button to reload latest data from server
+
+💡 BENEFITS OF THIS SYSTEM
+--------------------------
+• Centralized Management: All store information in one place
+• Bilingual Support: English and Hindi fields for better reach
+• Real-time Updates: Instant feedback and data persistence
+• Professional Presentation: Well-organized, user-friendly interface
+• SEO Optimization: Built-in SEO settings for better online visibility
+• Mobile Responsive: Works perfectly on all devices
+• Data Security: All information securely stored in Firebase
+
+🔄 AUTOMATIC FEATURES
+---------------------
+• Data Persistence: All settings automatically saved to database
+• Form Validation: Proper error handling and user feedback
+• Loading States: Visual feedback during save operations
+• Toast Notifications: Success and error messages
+• Responsive Design: Adapts to different screen sizes
+• Accessibility: Proper labels and keyboard navigation
+
+📊 DATA STRUCTURE
+-----------------
+All information is stored in a structured format with:
+• Unique identifiers for each setting
+• Timestamp tracking for updates
+• User tracking for who made changes
+• Automatic backup and recovery
+• Version control for data integrity
+
+🎨 USER INTERFACE FEATURES
+--------------------------
+• Beautiful purple gradient theme
+• Glassmorphism design effects
+• Tabbed navigation for easy organization
+• Intuitive form layouts
+• Visual feedback for all actions
+• Professional business appearance
+• Consistent with admin panel design
+
+🔧 TECHNICAL FEATURES
+---------------------
+• TypeScript support for type safety
+• React context for state management
+• Firebase integration for data storage
+• Real-time data synchronization
+• Error handling and recovery
+• Performance optimized
+• Scalable architecture
+
+This comprehensive contact settings system allows you to manage every aspect of your store's public information, ensuring consistency across all customer touchpoints and improving your business's professional presentation. 
